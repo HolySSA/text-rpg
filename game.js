@@ -4,7 +4,7 @@ import Player from './player.js';
 import { Monster, BossMonster } from './monster.js';
 import { generateConnectedMap } from './map.js';
 import { battle } from './battle.js';
-import { addAchievement, listAchievements } from './record.js';
+import { addRecords, listRecords } from './record.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {
@@ -227,11 +227,11 @@ const endGame = (player, stage) => {
   const currentStage = stage; // 현재 스테이지
 
   // 업적 추가
-  addAchievement(nickname, level, exp, currentStage);
+  addRecords(nickname, level, exp, currentStage);
 
   // 업적 확인
   console.log(chalk.yellowBright('업적이 저장되었습니다!'));
-  listAchievements(); // 저장된 업적 목록 출력
+  listRecords(); // 저장된 업적 목록 출력
 }
 
 // 대기 함수(시간 지연)

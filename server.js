@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import figlet from 'figlet';
 import readlineSync from 'readline-sync';
-import {startGame} from "./game.js";
-import { listAchievements } from './record.js';
+import { startGame } from "./game.js";
+import { listRecords } from './record.js';
 
 // 로비 화면을 출력하는 함수
 function displayLobby() {
@@ -24,7 +24,7 @@ function displayLobby() {
     console.log(line);
 
     // 게임 이름
-    console.log(chalk.yellowBright.bold('CLI 게임에 오신것을 환영합니다!'));
+    console.log(chalk.yellowBright.bold('textRPG 게임에 오신것을 환영합니다!'));
 
     // 설명 텍스트
     console.log(chalk.green('옵션을 선택해주세요.'));
@@ -56,7 +56,7 @@ function handleUserInput() {
         case '2':
             console.log(chalk.yellow('업적을 확인합니다...'));
             // 업적 확인하기 로직을 구현
-            listAchievements();
+            listRecords();
             handleUserInput();
             break;
         case '3':

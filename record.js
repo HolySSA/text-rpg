@@ -7,11 +7,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 업적 데이터가 저장될 파일 경로
+// 업적이 저장될 파일 경로
 const recordsFile = path.join(__dirname, 'record.json');
 
-// 업적 데이터를 로드하는 함수
-function loadAchievements() {
+// 업적 데이터를 로드
+function loadRecords() {
   // 파일이 존재할 경우
   if (fs.existsSync(recordsFile)) {
     const data = fs.readFileSync(recordsFile, 'utf8');
@@ -21,21 +21,21 @@ function loadAchievements() {
   return [];
 }
 
-// 업적 데이터를 저장하는 함수
+// 업적 데이터를 저장
 function saveRecords(achievements) {
   fs.writeFileSync(recordsFile, JSON.stringify(achievements, null, 2), 'utf8');
 }
 
 // 업적 추가 함수
 function addRecords(nickname, level, exp, stage) {
-  const achievements = loadAchievements();
+  const achievements = loadRecords();
   achievements.push({ nickname, level, exp, stage, date: new Date().toISOString() });
   saveRecords(achievements);
 }
 
 // 업적 목록을 출력하는 함수
-function listAchievements() {
-  const achievements = loadAchievements();
+function listRecords() {
+  const achievements = loadRecords();
 
    // 업적을 스테이지가 높고, 스테이지가 같은 경우 레벨이 높은 순으로 정렬
    achievements.sort((a, b) => {
@@ -58,4 +58,4 @@ function listAchievements() {
   });
 }
 
-export { addRecords, listAchievements };
+export { addRecords, listRecords };
