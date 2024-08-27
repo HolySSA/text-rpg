@@ -8,11 +8,12 @@ import { addAchievement, listAchievements } from './record.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {
+  // 맵 생성 유효성 체크
   if (!Array.isArray(map) || !Array.isArray(map[0])) {
     throw new Error('맵 생성 오류!');
   }
   
-  console.log(chalk.yellowBright('맵 (P : 플레이어, X : 장애물 B : 보스)'));
+  console.log(chalk.yellowBright('맵 ( P : 플레이어, X : 장애물, B : 보스 )'));
   map.forEach((row, y) => {
     console.log(row.map((cell, x) => {
       if (player.x === x && player.y === y) {
@@ -23,7 +24,8 @@ function displayMap(map, player, boss) {
          // 보스 몬스터의 위치
         return chalk.magenta('B');
       }
-      // 장애물이라면 X표시 아님 .표시
+
+      // 장애물이라면 X 표시 아님 . 표시
       return cell === 'X' ? chalk.red('X') : chalk.green('.');
     }).join(' '));
   });
@@ -31,7 +33,7 @@ function displayMap(map, player, boss) {
 
 // 상태 출력 함수
 function displayStatus(stage, player, monster) {
-  console.log(chalk.magentaBright(`\n=== Current Status ===`));
+  console.log(chalk.yellowBright(`\n=== Current Status ===`));
   console.log(
     chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp} / ${player.expToNext} |\n`) +
     chalk.blueBright(
@@ -41,7 +43,7 @@ function displayStatus(stage, player, monster) {
       `| ${monster.name} HP: ${monster.hp} |`,
     ),
   );
-  console.log(chalk.magentaBright(`=====================\n`));
+  console.log(chalk.yellowBright(`=====================\n`));
 }
 
 const adventure = async (stage, player, boss) => {
@@ -128,7 +130,7 @@ const adventure = async (stage, player, boss) => {
         if (player.x === boss.x && player.y === boss.y) {
           console.log(chalk.red('보스와 조우했습니다!!!'));
           // 3초 지연 후 보스 배틀
-          await waitFunc(3000);
+          await delayFunc(3000);
           await battle(stage, player, boss);
 
           // 보스 처치 시 
@@ -137,7 +139,7 @@ const adventure = async (stage, player, boss) => {
             // 플레이어 위치 초기화
             player.x = 0, player.y = 0;
             // 3초 딜레이
-            waitFunc(3000);
+            await delayFunc(3000);
             return;
           }
           break;
@@ -147,7 +149,7 @@ const adventure = async (stage, player, boss) => {
         if (player.encounterMonster()) {
           console.log(chalk.red('몬스터와 조우했습니다!'));
           // 3초 지연
-          await waitFunc(3000);
+          await delayFunc(3000);
           // 일반 몬스터 생성 후 배틀
           const monster = new Monster(stage);
           await battle(stage, player, monster);
@@ -165,14 +167,14 @@ const adventure = async (stage, player, boss) => {
           // 플레이어 위치 초기화
           player.x = 0, player.y = 0;
           // 3초 딜레이
-          await waitFunc(3000);
+          await delayFunc(3000);
           return;
         }
         else {
           // 90% 탈출 실패
           console.log(chalk.red('탈출에 실패했습니다! 몬스터와 조우합니다.'));
           // 3초 지연
-          await waitFunc(3000);
+          await delayFunc(3000);
           // 몬스터 조우
           const monster = new Monster(stage);
           await battle(stage, player, monster);
@@ -215,7 +217,7 @@ const startGame = async () => {
 }
 
 // 게임 종료 시 호출되는 함수
-function endGame(player, stage) {
+const endGame = (player, stage) => {
   console.log(chalk.yellowBright('게임 종료!'));
 
   // 사용자 입력 받기
@@ -233,8 +235,8 @@ function endGame(player, stage) {
 }
 
 // 대기 함수(시간 지연)
-function waitFunc(ms) {
+function delayFunc(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export { startGame, endGame, displayStatus, waitFunc }
+export { startGame, endGame, displayStatus, delayFunc }

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { displayStatus, waitFunc, endGame } from './game.js';
+import { displayStatus, delayFunc, endGame } from './game.js';
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -8,7 +8,8 @@ const battle = async (stage, player, monster) => {
 
   console.log(chalk.red('몬스터와 전투 중...'));
   // 몬스터와의 전투 로직
-  while(player.hp > 0 && monster.hp > 0) {
+  while (player.hp > 0 && monster.hp > 0) {
+    // 콘솔창 초기화 및 정리
     console.clear();
     displayStatus(stage, player, monster);
 
@@ -23,10 +24,12 @@ const battle = async (stage, player, monster) => {
     const choice = readlineSync.question('당신의 선택은? ');
     switch (choice) {
       case "1":
+        // 공격
+
         player.attack(monster);
         logs.push(chalk.blue(`몬스터에게 ${player.attackValues}의 피해를 입혔습니다!`));
 
-        // 몬스터의 살아있다면 플레이어 공격
+        // 몬스터가 살아있다면 플레이어 공격
         if (monster.hp > 0) {
           monster.attack(player);
           logs.push(chalk.red(`몬스터가 ${monster.attackValues}의 피해를 입혔습니다!`));
@@ -44,7 +47,7 @@ const battle = async (stage, player, monster) => {
           console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
           player.gainExp(exp);
           // 3초 딜레이
-          await waitFunc(3000);
+          await delayFunc(3000);
           return;
         }
         break;
@@ -58,6 +61,7 @@ const battle = async (stage, player, monster) => {
           player.counterattack(monster);
           logs.push(chalk.blue(`반격 성공!!! 몬스터에게 ${player.counterAtk}의 피해를 입혔습니다!`));
 
+          // 몬스터 사망 체크
           if (monster.hp <= 0) {
             // 콘솔 초기화
             console.clear();
@@ -71,7 +75,7 @@ const battle = async (stage, player, monster) => {
             console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
             player.gainExp(exp);
             // 3초 딜레이
-            await waitFunc(3000);
+            await delayFunc(3000);
             return;
           }
         }
@@ -87,9 +91,9 @@ const battle = async (stage, player, monster) => {
       case "3":
         // 30% 로 도망가기 성공
         if (Math.random() < 0.3) {
-          console.log(chalk.green('몬스터에게서 달아났습니다.'));
+          console.log(chalk.green('몬스터에게서 달아났습니다...'));
           // 2초 딜레이
-          await waitFunc(2000);
+          await delayFunc(2000);
           return;
         }
         else {
@@ -107,11 +111,11 @@ const battle = async (stage, player, monster) => {
     // 플레이어의 선택에 따라 다음 행동 처리
     logs.push(chalk.green(`${choice}를 선택하셨습니다.\n`));
 
-    // 플레이어가 패배했을 때
+    // 플레이어가 사망 시
     if (player.hp <= 0) {
       console.log(chalk.redBright('플레이어가 패배했습니다!'));
       endGame(player, stage);
-      return; // 배틀 종료
+      return;
     }
   }
 }

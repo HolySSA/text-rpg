@@ -22,15 +22,15 @@ function loadAchievements() {
 }
 
 // 업적 데이터를 저장하는 함수
-function saveAchievements(achievements) {
+function saveRecords(achievements) {
   fs.writeFileSync(recordsFile, JSON.stringify(achievements, null, 2), 'utf8');
 }
 
 // 업적 추가 함수
-function addAchievement(nickname, level, exp, stage) {
+function addRecords(nickname, level, exp, stage) {
   const achievements = loadAchievements();
   achievements.push({ nickname, level, exp, stage, date: new Date().toISOString() });
-  saveAchievements(achievements);
+  saveRecords(achievements);
 }
 
 // 업적 목록을 출력하는 함수
@@ -58,4 +58,4 @@ function listAchievements() {
   });
 }
 
-export { addAchievement, listAchievements };
+export { addRecords, listAchievements };

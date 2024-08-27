@@ -25,12 +25,6 @@ class Player {
     this.y = 0;
   }
 
-  // 방어 확률 set
-  setDefChances(counterChance, defChance) {
-    this.counterChance = counterChance; // 반격 확률
-    this.defChance = defChance; // 방어 확률
-  }
-
   move(direction, map) {
     // 상하좌우 업데이트 (위치 표시)
     const newX = this.x + (direction === 'right' ? 1 : direction === 'left' ? -1 : 0);
@@ -46,27 +40,27 @@ class Player {
   // 몬스터 조우 함수
   encounterMonster() {
     // 30% 확률
-    if (Math.random() < 0.7)
+    if (Math.random() < 0.3)
       return true;
 
     return false;
   }
 
-  // 일반 공격 디폴트
+  // 공격
   attack(monster) {
-    const minAtk = Math.ceil(this.atk * 0.5); // 50%
-    const maxAtk = Math.floor(this.atk * 1.5); // 150%
+    const minAtk = Math.ceil(this.atk * 0.5); // 대략 50%
+    const maxAtk = Math.floor(this.atk * 1.5); // 대략 150%
 
     // randomAtk 값을 저장할 배열
     this.attackValues = [];
 
-    // 공격 횟수 설정 (기본값은 1회, 레벨업 시 변경될 수 있음)
+    // 공격 횟수 설정 (디폴트는 1회, 레벨업 시 연속 공격에 의해 변경 가능성)
     const atkTimes = this.atkTimes || 1;
 
     for (let i = 0; i < atkTimes; i++) {
       // 공격시 최소~최대 사이의 데미지 / 공격력의 경우 정수가 가독성이 좋으므로 floor로 버리기
       const randomAtk = Math.floor(Math.random() * (maxAtk - minAtk + 1)) + minAtk;
-      // randomAtk 값 저장
+      // randomAtk 값 할당
       this.attackValues.push(randomAtk);
       // 몬스터 데미지
       monster.takeDamage(randomAtk);
@@ -81,9 +75,10 @@ class Player {
     }
   }
 
-  // 방어 메소드
+  // 방어
   defense() {
     const randNum = Math.random();
+    // 반격 확률, 방어 확률에 따른 반격/방어 성공/실패
     if (randNum < this.counterChance)
       return 'counter';
     else if (randNum < this.counterChance + this.defChance)
@@ -92,8 +87,9 @@ class Player {
       return 'failure';
   }
 
+  // 반격
   counterattack(monster) {
-    // 카운터 어택 시 2배 데미지
+    // 카운터 어택 시 공격력의 2배 적용
     this.counterAtk = Math.floor(this.atk * 2); 
     // 몬스터 데미지
     monster.takeDamage(this.counterAtk);
@@ -105,6 +101,7 @@ class Player {
     this.checkLevelUp();
   }
 
+  // 레벨업 체크
   checkLevelUp() {
     while (this.exp >= this.expToNext) {
       this.exp -= this.expToNext;
@@ -130,8 +127,10 @@ class Player {
     const randNum = Math.random();
     let accumulate = 0;
 
+    // 랜덤값과 확률 누적값을 비교하며 어떤 보상이 선택되었는지 체크
     for (const reward of rewards) {
       accumulate += reward.chance;
+      // 랜덤값이 해당 누적값 범위에 들어설 경우
       if (randNum < accumulate) {
         this.applyReward(reward.type);
         break;
@@ -139,26 +138,31 @@ class Player {
     }
   }
 
-  // 선택된 보상을 적용
+  // 랜덤 선택된 보상을 적용
   applyReward (type) {
     switch (type) {
       case 'heal':
-        this.hp = this.maxHp; // 최대 체력으로 회복
+        // 최대 체력으로 회복
+        this.hp = this.maxHp;
         console.log(chalk.blue('체력이 최대치로 회복되었습니다.'));
         break;
       case 'atkIncrease':
+        // 공격력 증가
         this.atk = Math.round(this.atk * 1.5);
         console.log(chalk.blue(`공격력이 ${this.atk}로 증가했습니다.`));
         break;
       case 'defIncrease':
+        // 방어 확률 증가
         this.defChance = this.defChance + 0.1;
         console.log(chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
         break;
       case 'counterIncrease':
+        // 반격 확률 증가
         this.counterChance = this.counterChance + 0.1;
         console.log(chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`));
         break;
       case 'atkTimes':
+        // 연속 공격
         if (this.atkTimes < 3) {
           console.log(chalk.blue(`연속 공격(${this.atkTimes} -> ${this.atkTimes + 1}) 획득!`));
           this.atkTimes++;
