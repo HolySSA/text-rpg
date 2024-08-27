@@ -16,17 +16,17 @@ const battle = async (stage, player, monster) => {
 
     console.log(
       chalk.green(
-        `\n1. 공격하기. 2. 도망가기.`,
+        `\n1. 공격하기. 2. 방어하기 3. 도망가기.`,
       ),
     );
 
     const choice = readlineSync.question('당신의 선택은? ');
     switch (choice) {
-      case '1':
+      case "1":
         player.attack(monster);
         logs.push(chalk.blue(`몬스터에게 ${player.attackValues}의 피해를 입혔습니다!`));
 
-         // 몬스터의 살아있다면 플레이어 공격
+        // 몬스터의 살아있다면 플레이어 공격
         if (monster.hp > 0) {
           monster.attack(player);
           logs.push(chalk.red(`몬스터가 ${monster.attackValues}의 피해를 입혔습니다!`));
@@ -48,7 +48,41 @@ const battle = async (stage, player, monster) => {
         }
         break;
         
-      case '2':
+      case "2":
+        // 방어 로직
+
+        const defenseTry = player.defense();
+
+        if (defenseTry === 'counter'){
+          player.counterattack(monster);
+          logs.push(chalk.blue(`반격 성공!!! 몬스터에게 ${player.counterAtk}의 피해를 입혔습니다!`));
+
+          if (monster.hp <= 0) {
+            // 콘솔 초기화
+            console.clear();
+            displayStatus(stage, player, monster);
+            // 배틀 마무리 콘솔 업데이트
+            logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
+            logs.forEach((log) => console.log(log));
+            // 경험치 획득
+            const exp = monster.getExp();
+            console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
+            player.gainExp(exp);
+            // 2초 딜레이
+            await waitFunc(2000);
+            return;
+          }
+        }
+        else if (defenseTry === 'defense'){
+          logs.push(chalk.blue(`방어 성공! 데미지를 입지 않았습니다!`));
+        }
+        else {
+          monster.attack(player);
+          logs.push(chalk.red(`몬스터가 ${monster.attackValues}의 피해를 입혔습니다!`));
+        }
+        break;
+
+      case "3":
         // 30% 로 도망가기 성공
         if (Math.random() < 0.3) {
           console.log(chalk.green('몬스터에게서 달아났습니다.'));

@@ -11,6 +11,10 @@ class Player {
     this.atk = 10;
     this.atkTimes = 1;
 
+    // 방어력 관련
+    this.counterChance = 0.2;
+    this.defChance = 0.3;
+
     // 레벨 관련
     this.lv = 1;
     this.exp = 0;
@@ -19,6 +23,12 @@ class Player {
     // 위치 관련
     this.x = 0;
     this.y = 0;
+  }
+
+  // 방어 확률 set
+  setDefChances(counterChance, defChance) {
+    this.counterChance = counterChance; // 반격 확률
+    this.defChance = defChance; // 방어 확률
   }
 
   move(direction, map) {
@@ -44,8 +54,8 @@ class Player {
 
   // 일반 공격 디폴트
   attack(monster) {
-    const minAtk = this.atk * 0.5; // 50%
-    const maxAtk = this.atk * 1.5; // 150%
+    const minAtk = Math.ceil(this.atk * 0.5); // 50%
+    const maxAtk = Math.floor(this.atk * 1.5); // 150%
 
     // randomAtk 값을 저장할 배열
     this.attackValues = [];
@@ -71,6 +81,24 @@ class Player {
     }
   }
 
+  // 방어 메소드
+  defense() {
+    const randNum = Math.random();
+    if (randNum < this.counterChance)
+      return 'counter';
+    else if (randNum < this.counterChance + this.defChance)
+      return 'defense';
+    else
+      return 'failure';
+  }
+
+  counterattack(monster) {
+    // 카운터 어택 시 2배 데미지
+    this.counterAtk = Math.floor(this.atk * 2); 
+    // 몬스터 데미지
+    monster.takeDamage(this.counterAtk);
+  }
+
   // 경험치 획득
   gainExp(exp) {
     this.exp += exp;
@@ -91,23 +119,23 @@ class Player {
         // 레벨업 보상 선택
         console.log(
           chalk.blueBright(
-            `\n0. 체력회복. 1. 강타(공격력 1.5배 증가). 2. 연속 공격(공격 횟수 증가)`,
+            `\n1. 체력회복. 2. 강타(공격력 1.5배 증가). 3. 연속 공격(공격 횟수 증가)`,
           ),
         );
         const choice = readlineSync.question('레벨업 보상을 선택하세요. ');
 
         switch (choice) {
-          case "0": // 체력 회복
+          case "1": // 체력 회복
             this.hp = this.maxHp; // 최대 체력으로 회복
             console.log(chalk.blue('체력이 최대치로 회복되었습니다.'));
             choiceCheck = true;
             break;
-          case "1": // 공격력 증가
+          case "2": // 공격력 증가
             this.atk = Math.round(this.atk * 1.5);
             console.log(chalk.blue(`공격력이 ${this.atk}로 증가했습니다.`));
             choiceCheck = true;
             break;
-          case "2":
+          case "3":
             if (this.atkTimes < 3) {
               console.log(chalk.blue(`연속 공격(${this.atkTimes} -> ${this.atkTimes+1}) 획득!`));
               this.atkTimes++;
