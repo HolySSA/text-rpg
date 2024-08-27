@@ -91,7 +91,7 @@ class Player {
         // 레벨업 보상 선택
         console.log(
           chalk.blueBright(
-            `\n0. 체력회복. 1. 강타(공격력 2배 증가). 2. 연속 공격(공격 횟수 증가)`,
+            `\n0. 체력회복. 1. 강타(공격력 1.5배 증가). 2. 연속 공격(공격 횟수 증가)`,
           ),
         );
         const choice = readlineSync.question('레벨업 보상을 선택하세요. ');
@@ -103,7 +103,7 @@ class Player {
             choiceCheck = true;
             break;
           case "1": // 공격력 증가
-            this.atk *= 2; // 공격력 2배 증가
+            this.atk = Math.round(this.atk * 1.5);
             console.log(chalk.blue(`공격력이 ${this.atk}로 증가했습니다.`));
             choiceCheck = true;
             break;
