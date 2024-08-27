@@ -113,43 +113,62 @@ class Player {
       this.expToNext = Math.floor(this.expToNext * 1.2);
       console.log(`플레이어 레벨업! Player Level : ${this.lv}`);
 
-      // 선택 유효 체크
-      let choiceCheck = false;
-      while (!choiceCheck) {
-        // 레벨업 보상 선택
-        console.log(
-          chalk.blueBright(
-            `\n1. 체력회복. 2. 강타(공격력 1.5배 증가). 3. 연속 공격(공격 횟수 증가)`,
-          ),
-        );
-        const choice = readlineSync.question('레벨업 보상을 선택하세요. ');
+      this.levelUpReward();
+    }
+  }
 
-        switch (choice) {
-          case "1": // 체력 회복
-            this.hp = this.maxHp; // 최대 체력으로 회복
-            console.log(chalk.blue('체력이 최대치로 회복되었습니다.'));
-            choiceCheck = true;
-            break;
-          case "2": // 공격력 증가
-            this.atk = Math.round(this.atk * 1.5);
-            console.log(chalk.blue(`공격력이 ${this.atk}로 증가했습니다.`));
-            choiceCheck = true;
-            break;
-          case "3":
-            if (this.atkTimes < 3) {
-              console.log(chalk.blue(`연속 공격(${this.atkTimes} -> ${this.atkTimes+1}) 획득!`));
-              this.atkTimes++;
-              choiceCheck = true;
-            }
-            else {
-              console.log('기본 공격 횟수는 최대 3회까지 증가할 수 있습니다.');
-            }
-            break;
-          default:
-            console.log('잘못된 선택입니다.');
-            break;
-        }
+  // 레벨업 보상 선택
+  levelUpReward() {
+    const rewards = [
+      { type: 'heal', chance: 0.4 }, // 체력 회복 40%
+      { type: 'atkIncrease', chance: 0.2 }, // 공격력 증가 20%
+      { type: 'defIncrease', chance: 0.2 }, // 방어확률 증가 20%
+      { type: 'counterIncrease', chance: 0.1 }, // 반격확률 증가 10%
+      { type: 'atkTimes', chance: 0.1 } // 연속 공격 10%
+    ];
+
+    const randNum = Math.random();
+    let accumulate = 0;
+
+    for (const reward of rewards) {
+      accumulate += reward.chance;
+      if (randNum < accumulate) {
+        this.applyReward(reward.type);
+        break;
       }
+    }
+  }
+
+  // 선택된 보상을 적용
+  applyReward (type) {
+    switch (type) {
+      case 'heal':
+        this.hp = this.maxHp; // 최대 체력으로 회복
+        console.log(chalk.blue('체력이 최대치로 회복되었습니다.'));
+        break;
+      case 'atkIncrease':
+        this.atk = Math.round(this.atk * 1.5);
+        console.log(chalk.blue(`공격력이 ${this.atk}로 증가했습니다.`));
+        break;
+      case 'defIncrease':
+        this.defChance = this.defChance + 0.1;
+        console.log(chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
+        break;
+      case 'counterIncrease':
+        this.counterChance = this.counterChance + 0.1;
+        console.log(chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`));
+        break;
+      case 'atkTimes':
+        if (this.atkTimes < 3) {
+          console.log(chalk.blue(`연속 공격(${this.atkTimes} -> ${this.atkTimes + 1}) 획득!`));
+          this.atkTimes++;
+        }
+        else
+          console.log('기본 공격 횟수는 최대 3회까지 증가할 수 있습니다.');
+        break;
+      default:
+        console.log('잘못된 보상 유형입니다.');
+        break;
     }
   }
 }

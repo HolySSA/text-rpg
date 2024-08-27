@@ -5,5 +5,19 @@
     "exp": 19,
     "stage": 4,
     "date": "2024-08-27T08:00:50.463Z"
+  },
+  {
+    "nickname": "boy",
+    "level": 5,
+    "exp": 11,
+    "stage": 3,
+    "date": "2024-08-27T11:16:51.312Z"
+  },
+  {
+    "nickname": "girl",
+    "level": 5,
+    "exp": 4,
+    "stage": 3,
+    "date": "2024-08-27T11:20:53.098Z"
   }
 ]

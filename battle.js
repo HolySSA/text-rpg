@@ -36,14 +36,15 @@ const battle = async (stage, player, monster) => {
           console.clear();
           displayStatus(stage, player, monster);
           // 배틀 마무리 콘솔 업데이트
+          logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
           logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
           logs.forEach((log) => console.log(log));
           // 경험치 획득
           const exp = monster.getExp();
           console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
           player.gainExp(exp);
-          // 2초 딜레이
-          await waitFunc(2000);
+          // 3초 딜레이
+          await waitFunc(3000);
           return;
         }
         break;
@@ -62,14 +63,15 @@ const battle = async (stage, player, monster) => {
             console.clear();
             displayStatus(stage, player, monster);
             // 배틀 마무리 콘솔 업데이트
+            logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
             logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
             logs.forEach((log) => console.log(log));
             // 경험치 획득
             const exp = monster.getExp();
             console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
             player.gainExp(exp);
-            // 2초 딜레이
-            await waitFunc(2000);
+            // 3초 딜레이
+            await waitFunc(3000);
             return;
           }
         }
