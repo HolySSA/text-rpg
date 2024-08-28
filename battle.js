@@ -7,6 +7,7 @@ const battle = async (stage, player, monster) => {
   let logs = [];
 
   console.log(chalk.red('몬스터와 전투 중...'));
+  
   // 몬스터와의 전투 로직
   while (player.hp > 0 && monster.hp > 0) {
     // 콘솔창 초기화 및 정리
@@ -113,7 +114,11 @@ const battle = async (stage, player, monster) => {
 
     // 플레이어가 사망 시
     if (player.hp <= 0) {
-      console.log(chalk.redBright('플레이어가 패배했습니다!'));
+      // 콘솔창 초기화 및 정리
+      console.clear();
+      displayStatus(stage, player, monster);
+      logs.push(chalk.redBright('플레이어가 패배했습니다!'));
+      logs.forEach((log) => console.log(log));
       endGame(player, stage);
       return;
     }

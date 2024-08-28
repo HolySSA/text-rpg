@@ -175,6 +175,12 @@ class Player {
         break;
     }
   }
+
+  /* 체력 무한
+  cheat() {
+    this.hp = this.maxHp;
+  }
+  */
 }
 
 export default Player;

@@ -138,6 +138,10 @@ const adventure = async (stage, player, boss) => {
             console.log(chalk.greenBright(`스테이지 ${stage} 클리어! 다음 스테이지로 넘어갑니다.`));
             // 플레이어 위치 초기화
             player.x = 0, player.y = 0;
+            // 플레이어 체력 회복
+            player.hp += 10;
+            if(player.hp > player.maxHp)
+              player.hp = player.maxHp;
             // 3초 딜레이
             await delayFunc(3000);
             return;
@@ -211,7 +215,7 @@ const startGame = async () => {
 
   if (stage > 10) {
     console.log('모든 스테이지를 클리어했습니다! 축하합니다!');
-    endGame(player, stage);
+    endGame(player, 10);
     return;
   }
 }
