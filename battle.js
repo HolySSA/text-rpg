@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import { displayStatus, delayFunc, endGame } from './game.js';
+import { updateUserCoins } from './items.js';
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -25,7 +26,7 @@ const battle = async (stage, player, monster) => {
     const choice = readlineSync.question('당신의 선택은? ');
     switch (choice) {
       case "1":
-        // 공격
+        // 공격 로직
 
         player.attack(monster);
         logs.push(chalk.blue(`몬스터에게 ${player.attackValues}의 피해를 입혔습니다!`));
@@ -43,10 +44,14 @@ const battle = async (stage, player, monster) => {
           logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
           logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
           logs.forEach((log) => console.log(log));
+          // 코인 획득
+          const coins = monster.getCoins(stage);
+          console.log(chalk.green(`몬스터로부터 ${coins} 코인을 얻었습니다.`));
+          updateUserCoins(coins);
           // 경험치 획득
           const exp = monster.getExp();
-          console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
-          player.gainExp(exp);
+          console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));
+          player.gainExp(exp); 
           // 3초 딜레이
           await delayFunc(3000);
           return;
@@ -71,9 +76,13 @@ const battle = async (stage, player, monster) => {
             logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
             logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
             logs.forEach((log) => console.log(log));
+            // 코인 획득
+            const coins = monster.getCoins(stage);
+            console.log(chalk.green(`몬스터로부터 ${coins} 코인을 얻었습니다.`));
+            updateUserCoins(coins);
             // 경험치 획득
             const exp = monster.getExp();
-            console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.`));
+            console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));
             player.gainExp(exp);
             // 3초 딜레이
             await delayFunc(3000);
@@ -119,6 +128,7 @@ const battle = async (stage, player, monster) => {
       displayStatus(stage, player, monster);
       logs.push(chalk.redBright('플레이어가 패배했습니다!'));
       logs.forEach((log) => console.log(log));
+      // 업적 저장 후 게임 종료
       endGame(player, stage);
       return;
     }

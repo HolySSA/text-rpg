@@ -1,5 +1,6 @@
 // 맵 생성 함수
-function generateConnectedMap(width, height, startX, startY, bossX, bossY) {
+function generateMap(width, height, startX, startY, bossX, bossY) {
+  // 맵, 방문여부 Array 초기화
   const map = Array.from({ length: height }, () => Array(width).fill('.'));
   const visited = Array.from({ length: height }, () => Array(width).fill(false));
   // 플레이어와 보스 사이의 경로
@@ -17,6 +18,7 @@ function generateConnectedMap(width, height, startX, startY, bossX, bossY) {
     visited[startY][startX] = true;
     addPath(startX, startY);
     
+    // queue 길이만큼 
     while (queue.length) {
       const [x, y] = queue.shift();
 
@@ -28,21 +30,26 @@ function generateConnectedMap(width, height, startX, startY, bossX, bossY) {
         [0, 1], [1, 0], [0, -1], [-1, 0] // 아래, 오른쪽, 위, 왼쪽
       ];
 
+      // 보스와 플레이어는 항상 이어져있어야 하므로 해당 경로 추적
       for (const [dx, dy] of directions) {
         const newX = x + dx;
         const newY = y + dy;
 
+        // 유효한 범위 체크
         if (newX >= 0 && newX < width && newY >= 0 && newY < height && !visited[newY][newX]) {
+          // 방문 체크
           visited[newY][newX] = true;
           queue.push([newX, newY]);
           parent[`${newX},${newY}`] = `${x},${y}`;
+          // 도착 지점 도달하면
           if (newX === endX && newY === endY) {
-            // 도착 지점에 도달했으면 경로 재구성
+            // 경로 재구성
             let [px, py] = [endX, endY];
             while (parent[`${px},${py}`]) {
               [px, py] = parent[`${px},${py}`].split(',').map(Number);
               addPath(px, py);
             }
+
             return;
           }
         }
@@ -55,12 +62,13 @@ function generateConnectedMap(width, height, startX, startY, bossX, bossY) {
   // 장애물 추가 (연결된 경로를 방해하지 않도록)
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      // 첫번째 배열 제외
+      // 처음(플레이어) 지점과 마지막(보스) 지점 제외
       if((y === 0 && x === 0) || (x === bossX && y === bossY))
         continue;
-      // 현재 위치가 경로에 없는 경우에만 장애물을 추가
+      // 플레이어와 보스 사이 최단 경로에 포함X
       if (map[y][x] === '.' && Math.random() > 0.7 && !path.has(`${x},${y}`)) {
-        map[y][x] = 'X'; // 장애물
+        // 장애물 추가
+        map[y][x] = 'X';
       }
     }
   }
@@ -68,4 +76,4 @@ function generateConnectedMap(width, height, startX, startY, bossX, bossY) {
   return map;
 }
 
-export { generateConnectedMap };
+export { generateMap };

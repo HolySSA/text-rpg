@@ -3,6 +3,8 @@ import figlet from 'figlet';
 import readlineSync from 'readline-sync';
 import { startGame } from "./game.js";
 import { listRecords } from './record.js';
+import { openStore } from './store.js';
+import { getUserInventory, getItemNameById } from './items.js';
 
 // 로비 화면을 출력하는 함수
 function displayLobby() {
@@ -24,16 +26,26 @@ function displayLobby() {
     console.log(line);
 
     // 게임 이름
-    console.log(chalk.yellowBright.bold('textRPG 게임에 오신것을 환영합니다!'));
+    console.log(chalk.yellowBright.bold('textRPG 게임에 오신 것을 환영합니다!'));
+
+    // 사용자 인벤토리
+    let userInventory = getUserInventory();
+    // 아이템 정보를 포맷하여 출력
+    function formatItems(items) {
+        return Object.keys(items).map(id => {
+            const itemName = getItemNameById(id);
+            return itemName;
+        }).join(', ');
+    }
 
     // 설명 텍스트
     console.log(chalk.green('옵션을 선택해주세요.'));
     console.log();
 
     // 옵션들
-    console.log(chalk.blue('1.') + chalk.white(' 새로운 게임 시작'));
-    console.log(chalk.blue('2.') + chalk.white(' 업적 확인하기'));
-    console.log(chalk.blue('3.') + chalk.white(' 옵션'));
+    console.log(chalk.blue('1.') + chalk.white(` 새로운 게임 시작 (보유아이템: [${formatItems(userInventory.items)}] 보유코인: ${userInventory.coins})`));
+    console.log(chalk.blue('2.') + chalk.white(' 전용 상점'));
+    console.log(chalk.blue('3.') + chalk.white(' 업적 확인하기'));
     console.log(chalk.blue('4.') + chalk.white(' 종료'));
 
     // 하단 경계선
@@ -43,7 +55,7 @@ function displayLobby() {
     console.log(chalk.gray('1-4 사이의 수를 입력한 뒤 엔터를 누르세요.'));
 }
 
-// 유저 입력을 받아 처리하는 함수
+// 유저 입력을 받아 처리
 function handleUserInput() {
     const choice = readlineSync.question('입력: ');
 
@@ -54,14 +66,13 @@ function handleUserInput() {
             startGame();
             break;
         case '2':
+            // 전용 상점 로직을 구현
+            openStore();
+            break;
+        case '3':
             console.log(chalk.yellow('업적을 확인합니다...'));
             // 업적 확인하기 로직을 구현
             listRecords();
-            handleUserInput();
-            break;
-        case '3':
-            console.log(chalk.blue('구현 준비중입니다.. 게임을 시작하세요'));
-            // 옵션 메뉴 로직을 구현
             handleUserInput();
             break;
         case '4':
@@ -83,3 +94,5 @@ function start() {
 
 // 게임 실행
 start();
+
+export { start }

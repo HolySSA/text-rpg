@@ -21,7 +21,8 @@ class Monster {
     this.hp *= stage;
     this.atk = Monster.DEFAULT_ATK;
     this.atk *= stage;
-    this.name = this.getNameForStage(stage); // 스테이지에 따른 이름 할당
+    // 스테이지에 따른 이름 할당
+    this.name = this.getNameForStage(stage); 
   }
 
   // 스테이지 별 몬스터 이름 적용
@@ -49,10 +50,20 @@ class Monster {
       this.hp = 0;
   }
 
-  // 경험치 획득
+  // 경험치 생성
   getExp() {
     // 1~5 디폴트
     return Math.floor(Math.random() * 5) + 1;
+  }
+
+  // 코인 생성
+  getCoins(stage) {
+    // 스테이지 별 코인 범위
+    const minCoin = 1 * stage;
+    const maxCoin = 2 * stage;
+    
+    // 랜덤 코인
+    return Math.floor(Math.random() * (maxCoin - minCoin + 1)) + minCoin;
   }
 }
 
@@ -74,9 +85,11 @@ class BossMonster extends Monster {
 
   constructor(stage) {
     super(stage);
-    this.name = BossMonster.bossNames[stage - 1] || 'Unknown Boss'; // 보스 이름 할당
+    // 보스 이름 할당
+    this.name = BossMonster.bossNames[stage - 1] || 'Unknown Boss';
+    // 해당 스테이지 몬스터의 10배(해당 hp 랜덤적용)
     this.hp *= 10;
-    // 해당 스테이지 몬스터의 2배
+    // 해당 스테이지 몬스터의 2배(해당 hp 랜덤적용)
     this.atk *= 2;
     // 최소공격력
     this.minAtk = Math.ceil(this.atk / 2);
@@ -92,10 +105,20 @@ class BossMonster extends Monster {
     player.takeDamage(damage);
   }
 
-  // 경험치
+  // 경험치 생성
   getExp() {
     // 일반 몬스터 경험치의 3배
     return (Math.floor(Math.random() * 5) + 1) * 3;
+  }
+
+  // 코인 생성
+  getCoins(stage) {
+    // 스테이지 별 코인 범위
+    const minCoin = 1 * stage;
+    const maxCoin = 2 * stage;
+    
+    // 일반 몬스터의 3배
+    return (Math.floor(Math.random() * (maxCoin - minCoin + 1)) + minCoin) * 3;
   }
 }
 

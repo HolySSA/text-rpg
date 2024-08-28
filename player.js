@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import readlineSync from 'readline-sync';
+import { getUserInventory, getItemNameById, getItemEffect } from './items.js';
 
 class Player {
   constructor() {
@@ -12,8 +12,8 @@ class Player {
     this.atkTimes = 1;
 
     // 방어력 관련
-    this.counterChance = 0.2;
-    this.defChance = 0.3;
+    this.counterChance = 0.1;
+    this.defChance = 0.2;
 
     // 레벨 관련
     this.lv = 1;
@@ -23,6 +23,9 @@ class Player {
     // 위치 관련
     this.x = 0;
     this.y = 0;
+
+    // 보유 무기 효과
+    this.applyItemEffects();
   }
 
   move(direction, map) {
@@ -103,7 +106,9 @@ class Player {
 
   // 레벨업 체크
   checkLevelUp() {
+    // 요구 exp 량보다 많을 경우
     while (this.exp >= this.expToNext) {
+      // 경험치 환산 후 레벨업
       this.exp -= this.expToNext;
       this.lv++;
       // 요구 경험치 증가
@@ -153,12 +158,12 @@ class Player {
         break;
       case 'defIncrease':
         // 방어 확률 증가
-        this.defChance = this.defChance + 0.1;
+        this.defChance = toDecimal(this.defChance + 0.1, 2);
         console.log(chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
         break;
       case 'counterIncrease':
         // 반격 확률 증가
-        this.counterChance = this.counterChance + 0.1;
+        this.counterChance = toDecimal(this.counterChance + 0.1, 2);
         console.log(chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`));
         break;
       case 'atkTimes':
@@ -176,11 +181,50 @@ class Player {
     }
   }
 
+  // 스타팅 무기 장착했을 경우 해당 효과 적용
+  applyItemEffects() {
+    // 인벤토리 불러온 후
+    const inventory = getUserInventory();
+    // 아이템 체크
+    for (const itemId of Object.keys(inventory.items)) {
+      const effect = getItemEffect(itemId);
+      const itemName = getItemNameById(itemId);
+      // 아이템(효과) 존재 시 적용
+      if (effect) {
+          this.applyEffect(itemName, effect);
+      }
+    }
+  }
+
+  // 아이템 효과 적용
+  applyEffect(itemName, effect) {
+    switch (effect) {
+      case 'atkIncrease10':
+        // 녹슨검
+        this.atk = Math.round(this.atk * 1.1);
+        console.log(chalk.blue(`${itemName}에 의해 공격력이 ${this.atk}로 증가했습니다.`));
+        break;
+      case 'defIncrease10':
+        // 나무방패
+        this.defChance = toDecimal(this.defChance + 0.1, 2);
+        console.log(chalk.blue(`${itemName}에 의해 방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
+        break;
+      default:
+        console.log(chalk.red('알 수 없는 효과입니다.'));
+    }
+  }
+
   /* 체력 무한
   cheat() {
     this.hp = this.maxHp;
   }
   */
+}
+
+// 바로 계산할 경우 소수점자리 오류가 생기므로 해당 함수로 변환
+function toDecimal(number, decimals) {
+  const factor = Math.pow(10, decimals);
+  return Math.round(number * factor) / factor;
 }
 
 export default Player;

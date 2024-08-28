@@ -2,9 +2,10 @@ import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import Player from './player.js';
 import { Monster, BossMonster } from './monster.js';
-import { generateConnectedMap } from './map.js';
+import { generateMap } from './map.js';
 import { battle } from './battle.js';
 import { addRecords, listRecords } from './record.js';
+import { getUserInventory } from './items.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {
@@ -33,11 +34,17 @@ function displayMap(map, player, boss) {
 
 // 상태 출력 함수
 function displayStatus(stage, player, monster) {
+  // 보유 코인을 가져오기 위해
+  let userInventory = getUserInventory();
+  // 콘솔
+  // 스테이지 및 플레이어 정보
+  // 플레이어 스탯
+  // 몬스터 스탯
   console.log(chalk.yellowBright(`\n=== Current Status ===`));
   console.log(
-    chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp} / ${player.expToNext} |\n`) +
+    chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp}/${player.expToNext} Coins: ${userInventory.coins} |\n`) +
     chalk.blueBright(
-      `| Player HP: ${player.hp} |\n`,
+      `| Player HP: ${player.hp} ATK: ${player.atk} ATK Time: ${player.atkTimes} DEF: ${player.defChance*100}% COUNTER: ${player.counterChance*100}% |\n`,
     ) +
     chalk.redBright(
       `| ${monster.name} HP: ${monster.hp} |`,
@@ -67,7 +74,7 @@ const adventure = async (stage, player, boss) => {
   }
 
   // 10, 10 크기의 맵 생성
-  const map = generateConnectedMap(10, 10, playerX, playerY, bossX, bossY);
+  const map = generateMap(10, 10, playerX, playerY, bossX, bossY);
   
   // 보스 위치 할당
   boss.x = bossX;

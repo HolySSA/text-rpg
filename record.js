@@ -22,34 +22,39 @@ function loadRecords() {
 }
 
 // 업적 데이터를 저장
-function saveRecords(achievements) {
-  fs.writeFileSync(recordsFile, JSON.stringify(achievements, null, 2), 'utf8');
+function saveRecords(records) {
+  fs.writeFileSync(recordsFile, JSON.stringify(records, null, 2), 'utf8');
 }
 
-// 업적 추가 함수
+// 업적 추가
 function addRecords(nickname, level, exp, stage) {
-  const achievements = loadRecords();
-  achievements.push({ nickname, level, exp, stage, date: new Date().toISOString() });
-  saveRecords(achievements);
+  const records = loadRecords();
+  // 닉네임 레벨 경험치 스테이지 날짜
+  records.push({ nickname, level, exp, stage, date: new Date().toISOString() });
+  saveRecords(records);
 }
 
-// 업적 목록을 출력하는 함수
+// 업적 목록을 출력
 function listRecords() {
-  const achievements = loadRecords();
+  const records = loadRecords();
 
-   // 업적을 스테이지가 높고, 스테이지가 같은 경우 레벨이 높은 순으로 정렬
-   achievements.sort((a, b) => {
+   // 업적 정렬 로직
+   records.sort((a, b) => {
+    // 스테이지 순
     if (b.stage !== a.stage)
-      return b.stage - a.stage; // 스테이지가 높은 순
+      return b.stage - a.stage;
     
+    // 레벨 순
     if (b.level !== a.level)
-      return b.level - a.level; // 스테이지가 같으면 레벨이 높은 순
+      return b.level - a.level;
 
-    return b.exp - a.exp; // 스테이지, 레벨 동일할 경우 경험치 순
+    // 경험치 순
+    return b.exp - a.exp;
   });
 
+  // 업적 목록 출력
   console.log(chalk.green('업적 목록:'));
-  achievements.forEach((achievement) => {
+  records.forEach((achievement) => {
     console.log(`닉네임: ${achievement.nickname}`);
     console.log(`스테이지: ${achievement.stage}`);
     console.log(`레벨: ${achievement.level} (${achievement.exp})`);
