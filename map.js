@@ -18,8 +18,9 @@ function generateMap(width, height, startX, startY, bossX, bossY) {
     visited[startY][startX] = true;
     addPath(startX, startY);
     
-    // queue 길이만큼 
+    // queue가 텅 빌때까지 루프
     while (queue.length) {
+      // 큐에서 꺼낸 값 x, y로 저장
       const [x, y] = queue.shift();
 
       // 목적지에 도달하면 중단
@@ -32,14 +33,17 @@ function generateMap(width, height, startX, startY, bossX, bossY) {
 
       // 보스와 플레이어는 항상 이어져있어야 하므로 해당 경로 추적
       for (const [dx, dy] of directions) {
+        // 방향에 따른 노드
         const newX = x + dx;
         const newY = y + dy;
 
         // 유효한 범위 체크
         if (newX >= 0 && newX < width && newY >= 0 && newY < height && !visited[newY][newX]) {
-          // 방문 체크
+          // 방문 업데이트
           visited[newY][newX] = true;
+          // 방문했으니 queue에 추가
           queue.push([newX, newY]);
+          // 부모 노드 업데이트
           parent[`${newX},${newY}`] = `${x},${y}`;
           // 도착 지점 도달하면
           if (newX === endX && newY === endY) {
