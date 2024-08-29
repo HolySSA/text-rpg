@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { displayStatus, delayFunc, endGame } from './game.js';
+import { displayStatus, endGame } from './game.js';
 import { updateUserCoins } from './items.js';
+import Utils from "./src/lib/Utils.js";
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -53,7 +54,7 @@ const battle = async (stage, player, monster) => {
           console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));
           player.gainExp(exp); 
           // 3초 딜레이
-          await delayFunc(3000);
+          await Utils.TimeDelay(3000);
           return;
         }
         break;
@@ -85,7 +86,7 @@ const battle = async (stage, player, monster) => {
             console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));
             player.gainExp(exp);
             // 3초 딜레이
-            await delayFunc(3000);
+            await Utils.TimeDelay(3000);
             return;
           }
         }
@@ -103,7 +104,7 @@ const battle = async (stage, player, monster) => {
         if (Math.random() < 0.3) {
           console.log(chalk.green('몬스터에게서 달아났습니다...'));
           // 2초 딜레이
-          await delayFunc(2000);
+          await Utils.TimeDelay(2000);
           return;
         }
         else {

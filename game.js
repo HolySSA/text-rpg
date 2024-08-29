@@ -4,8 +4,9 @@ import Player from './player.js';
 import { Monster, BossMonster } from './monster.js';
 import { generateMap } from './map.js';
 import { battle } from './battle.js';
-import { addRecords, listRecords } from './record.js';
 import { getUserInventory } from './items.js';
+import Utils from "./src/lib/Utils.js";
+import Records from './src/lib/records.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {
@@ -137,7 +138,7 @@ const adventure = async (stage, player, boss) => {
         if (player.x === boss.x && player.y === boss.y) {
           console.log(chalk.red('보스와 조우했습니다!!!'));
           // 3초 지연 후 보스 배틀
-          await delayFunc(3000);
+          await Utils.TimeDelay(3000);
           await battle(stage, player, boss);
 
           // 보스 처치 시 
@@ -150,7 +151,7 @@ const adventure = async (stage, player, boss) => {
             if(player.hp > player.maxHp)
               player.hp = player.maxHp;
             // 3초 딜레이
-            await delayFunc(3000);
+            await Utils.TimeDelay(3000);
             return;
           }
           break;
@@ -160,7 +161,7 @@ const adventure = async (stage, player, boss) => {
         if (player.encounterMonster()) {
           console.log(chalk.red('몬스터와 조우했습니다!'));
           // 3초 지연
-          await delayFunc(3000);
+          await Utils.TimeDelay(3000);
           // 일반 몬스터 생성 후 배틀
           const monster = new Monster(stage);
           await battle(stage, player, monster);
@@ -178,14 +179,14 @@ const adventure = async (stage, player, boss) => {
           // 플레이어 위치 초기화
           player.x = 0, player.y = 0;
           // 3초 딜레이
-          await delayFunc(3000);
+          await Utils.TimeDelay(3000);
           return;
         }
         else {
           // 90% 탈출 실패
           console.log(chalk.red('탈출에 실패했습니다! 몬스터와 조우합니다.'));
           // 3초 지연
-          await delayFunc(3000);
+          await Utils.TimeDelay(3000);
           // 몬스터 조우
           const monster = new Monster(stage);
           await battle(stage, player, monster);
@@ -238,16 +239,12 @@ const endGame = (player, stage) => {
   const currentStage = stage; // 현재 스테이지
 
   // 업적 추가
-  addRecords(nickname, level, exp, currentStage);
+  Records.addRecords(nickname, level, exp, currentStage);
 
   // 업적 확인
   console.log(chalk.yellowBright('업적이 저장되었습니다!'));
-  listRecords(); // 저장된 업적 목록 출력
+  // 저장된 업적 목록 출력
+  Records.listRecords();
 }
 
-// 대기 함수(시간 지연)
-function delayFunc(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export { startGame, endGame, displayStatus, delayFunc }
+export { startGame, endGame, displayStatus }

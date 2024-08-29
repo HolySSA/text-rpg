@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+/*import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -63,4 +63,4 @@ function listRecords() {
   });
 }
 
-export { addRecords, listRecords };
+export { addRecords, listRecords };*/

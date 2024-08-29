@@ -2,9 +2,9 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import readlineSync from 'readline-sync';
 import { startGame } from "./game.js";
-import { listRecords } from './record.js';
 import { openStore } from './store.js';
 import { getUserInventory, getItemNameById } from './items.js';
+import Records from "./src/lib/records.js";
 
 // 로비 화면을 출력하는 함수
 function displayLobby() {
@@ -72,7 +72,7 @@ function handleUserInput() {
         case '3':
             console.log(chalk.yellow('업적을 확인합니다...'));
             // 업적 확인하기 로직을 구현
-            listRecords();
+            Records.listRecords();
             handleUserInput();
             break;
         case '4':
