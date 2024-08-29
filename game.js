@@ -6,7 +6,7 @@ import { generateMap } from './map.js';
 import { battle } from './battle.js';
 import { getUserInventory } from './items.js';
 import Utils from "./src/lib/Utils.js";
-import Records from './src/lib/records.js';
+import Records from './src/lib/Records.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {

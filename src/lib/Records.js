@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import Singleton from "../Singleton.js";
+import Singleton from "./Singleton.js";
 
 class Records extends Singleton {
   // #변수명 : private를 의미. 클래스 내부에서만 접근 가능한 변수.

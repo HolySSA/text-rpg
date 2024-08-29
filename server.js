@@ -4,7 +4,7 @@ import readlineSync from 'readline-sync';
 import { startGame } from "./game.js";
 import { openStore } from './store.js';
 import { getUserInventory, getItemNameById } from './items.js';
-import Records from "./src/lib/records.js";
+import Records from "./src/lib/Records.js";
 
 // 로비 화면을 출력하는 함수
 function displayLobby() {
