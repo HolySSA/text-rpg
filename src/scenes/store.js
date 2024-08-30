@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { start } from './server.js';
-import UserInventory from './src/lib/UserInventory.js';
+import { start } from '../../server.js';
+import UserInventory from '../lib/UserInventory.js';
 
 function openStore() {
   console.clear();

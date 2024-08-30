@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import figlet from 'figlet';
 import readlineSync from 'readline-sync';
-import { startGame } from "./game.js";
-import { openStore } from './store.js';
+import { startGame } from "./src/lib/game.js";
+import { openStore } from './src/scenes/store.js';
 import Records from "./src/lib/Records.js";
 import UserInventory from './src/lib/UserInventory.js';
 

@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { endGame } from './game.js';
-import Utils from "./src/lib/Utils.js";
-import UserInventory from './src/lib/UserInventory.js'
-import Display from './src/lib/Display.js';
+import { endGame } from '../lib/game.js';
+import Utils from "../lib/Utils.js";
+import UserInventory from '../lib/UserInventory.js'
+import Display from '../lib/Display.js';
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
