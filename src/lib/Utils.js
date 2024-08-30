@@ -18,6 +18,17 @@ class Utils {
       return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  /**
+   * @param {number} number - 정수
+   * @param {number} decimals - 제곱수
+   * @returns {number} - 주로 % 계산 시 사용
+   */
+  // 바로 계산할 경우 소수점자리 오류가 생기므로 해당 함수로 변환
+  static toDecimal(number, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.round(number * factor) / factor;
+  }
+
   // 만약 아래에 함수가 더 존재한다면 문서화 주석을 하나 더 선언 후 문서화로 정리하고 함수 선언하는 구조.
   // 아래는 테스트용으로 기입한 함수
 

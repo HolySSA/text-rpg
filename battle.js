@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { displayStatus, endGame } from './game.js';
+import { endGame } from './game.js';
 import Utils from "./src/lib/Utils.js";
 import UserInventory from './src/lib/UserInventory.js'
+import Display from './src/lib/Display.js';
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -14,7 +15,7 @@ const battle = async (stage, player, monster) => {
   while (player.hp > 0 && monster.hp > 0) {
     // 콘솔창 초기화 및 정리
     console.clear();
-    displayStatus(stage, player, monster);
+    Display.displayStatus(stage, player, monster)
 
     logs.forEach((log) => console.log(log));
 
@@ -40,7 +41,7 @@ const battle = async (stage, player, monster) => {
         else {
           // 콘솔 초기화
           console.clear();
-          displayStatus(stage, player, monster);
+          Display.displayStatus(stage, player, monster)
           // 배틀 마무리 콘솔 업데이트
           logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
           logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
@@ -72,7 +73,7 @@ const battle = async (stage, player, monster) => {
           if (monster.hp <= 0) {
             // 콘솔 초기화
             console.clear();
-            displayStatus(stage, player, monster);
+            Display.displayStatus(stage, player, monster)
             // 배틀 마무리 콘솔 업데이트
             logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
             logs.push(chalk.blue('\n몬스터를 무찔렀습니다!'));
@@ -126,7 +127,7 @@ const battle = async (stage, player, monster) => {
     if (player.hp <= 0) {
       // 콘솔창 초기화 및 정리
       console.clear();
-      displayStatus(stage, player, monster);
+      Display.displayStatus(stage, player, monster)
       logs.push(chalk.redBright('플레이어가 패배했습니다!'));
       logs.forEach((log) => console.log(log));
       // 업적 저장 후 게임 종료

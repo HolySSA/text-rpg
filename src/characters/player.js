@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import UserInventory from './src/lib/UserInventory.js';
+import UserInventory from '../lib/UserInventory.js';
+import Utils from "../lib/Utils.js";
 
 class Player {
   constructor() {
@@ -158,12 +159,12 @@ class Player {
         break;
       case 'defIncrease':
         // 방어 확률 증가
-        this.defChance = toDecimal(this.defChance + 0.1, 2);
+        this.defChance = Utils.toDecimal(this.defChance + 0.1, 2);
         console.log(chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
         break;
       case 'counterIncrease':
         // 반격 확률 증가
-        this.counterChance = toDecimal(this.counterChance + 0.1, 2);
+        this.counterChance = Utils.toDecimal(this.counterChance + 0.1, 2);
         console.log(chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`));
         break;
       case 'atkTimes':
@@ -204,7 +205,7 @@ class Player {
         break;
       case 'defIncrease10':
         // 나무방패
-        this.defChance = toDecimal(this.defChance + 0.1, 2);
+        this.defChance = Utils.toDecimal(this.defChance + 0.1, 2);
         console.log(chalk.blue(`${itemName}에 의해 방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
         break;
       default:
@@ -217,12 +218,6 @@ class Player {
     this.hp = this.maxHp;
   }
   */
-}
-
-// 바로 계산할 경우 소수점자리 오류가 생기므로 해당 함수로 변환
-function toDecimal(number, decimals) {
-  const factor = Math.pow(10, decimals);
-  return Math.round(number * factor) / factor;
 }
 
 export default Player;

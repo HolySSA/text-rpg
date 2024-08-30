@@ -1,56 +1,12 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import Player from './player.js';
-import { Monster, BossMonster } from './monster.js';
+import Player from './src/characters/player.js';
+import { Monster, BossMonster } from './src/characters/monster.js';
 import { generateMap } from './map.js';
 import { battle } from './battle.js';
 import Utils from "./src/lib/Utils.js";
 import Records from './src/lib/Records.js';
-import UserInventory from './src/lib/UserInventory.js';
-
-// 맵 출력 함수
-function displayMap(map, player, boss) {
-  // 맵 생성 유효성 체크
-  if (!Array.isArray(map) || !Array.isArray(map[0])) {
-    throw new Error('맵 생성 오류!');
-  }
-  
-  console.log(chalk.yellowBright('맵 ( P : 플레이어, X : 장애물, B : 보스 )'));
-  map.forEach((row, y) => {
-    console.log(row.map((cell, x) => {
-      if (player.x === x && player.y === y) {
-        // 플레이어의 위치
-        return chalk.blue('P');
-      }
-      if (boss && boss.x === x && boss.y === y) {
-         // 보스 몬스터의 위치
-        return chalk.magenta('B');
-      }
-
-      // 장애물이라면 X 표시 아님 . 표시
-      return cell === 'X' ? chalk.red('X') : chalk.green('.');
-    }).join(' '));
-  });
-}
-
-// 상태 출력 함수
-function displayStatus(stage, player, monster) {
-  // 콘솔
-  // 스테이지 및 플레이어 정보
-  // 플레이어 스탯
-  // 몬스터 스탯
-  console.log(chalk.yellowBright(`\n=== Current Status ===`));
-  console.log(
-    chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp}/${player.expToNext} Coins: ${UserInventory.coins} |\n`) +
-    chalk.blueBright(
-      `| Player HP: ${player.hp} ATK: ${player.atk} ATK Time: ${player.atkTimes} DEF: ${player.defChance*100}% COUNTER: ${player.counterChance*100}% |\n`,
-    ) +
-    chalk.redBright(
-      `| ${monster.name} HP: ${monster.hp} |`,
-    ),
-  );
-  console.log(chalk.yellowBright(`=====================\n`));
-}
+import Display from './src/lib/Display.js';
 
 const adventure = async (stage, player, boss) => {
   // 콘솔 출력 배열
@@ -84,8 +40,8 @@ const adventure = async (stage, player, boss) => {
     // 콘솔 초기화
     console.clear();
     // 상태창과 맵 출력
-    displayStatus(stage, player, boss);
-    displayMap(map, player, boss);
+    Display.displayStatus(stage, player, boss);
+    Display.displayMap(map, player, boss);
     // 콘솔 배열 출력
     logs.forEach((log) => console.log(log));
 
@@ -245,4 +201,4 @@ const endGame = (player, stage) => {
   Records.listRecords();
 }
 
-export { startGame, endGame, displayStatus }
+export { startGame, endGame }
