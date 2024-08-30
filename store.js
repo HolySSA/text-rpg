@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import { start } from './server.js';
-import { displayItems, buyItem } from './items.js';
+import UserInventory from './src/lib/UserInventory.js';
 
 function openStore() {
   console.clear();
@@ -36,7 +36,8 @@ function openStore() {
 // 유저 입력을 받아 처리하는 함수
 function handleUserInput() {
   console.log(chalk.yellow('\n0. 상점 나가기'));
-  displayItems(); // 아이템 목록 출력
+  // 아이템 목록 출력
+  UserInventory.displayItems();
 
   while(1){
     const buyChoice = readlineSync.question('\n구매할 물품: ');
@@ -46,8 +47,9 @@ function handleUserInput() {
         break;
       case "1":
       case "2":
-        buyItem(buyChoice);
-        displayItems(); // 구매 후 아이템 목록 갱신
+        // 구매 후 아이템 목록 갱신
+        UserInventory.buyItem(buyChoice);
+        UserInventory.displayItems();
         break;
       default:
         console.log(chalk.red('올바른 선택을 하세요.'));

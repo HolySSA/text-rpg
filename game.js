@@ -4,9 +4,9 @@ import Player from './player.js';
 import { Monster, BossMonster } from './monster.js';
 import { generateMap } from './map.js';
 import { battle } from './battle.js';
-import { getUserInventory } from './items.js';
 import Utils from "./src/lib/Utils.js";
 import Records from './src/lib/Records.js';
+import UserInventory from './src/lib/UserInventory.js';
 
 // 맵 출력 함수
 function displayMap(map, player, boss) {
@@ -35,15 +35,13 @@ function displayMap(map, player, boss) {
 
 // 상태 출력 함수
 function displayStatus(stage, player, monster) {
-  // 보유 코인을 가져오기 위해
-  let userInventory = getUserInventory();
   // 콘솔
   // 스테이지 및 플레이어 정보
   // 플레이어 스탯
   // 몬스터 스탯
   console.log(chalk.yellowBright(`\n=== Current Status ===`));
   console.log(
-    chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp}/${player.expToNext} Coins: ${userInventory.coins} |\n`) +
+    chalk.cyanBright(`| Stage: ${stage} | Level: ${player.lv} Exp: ${player.exp}/${player.expToNext} Coins: ${UserInventory.coins} |\n`) +
     chalk.blueBright(
       `| Player HP: ${player.hp} ATK: ${player.atk} ATK Time: ${player.atkTimes} DEF: ${player.defChance*100}% COUNTER: ${player.counterChance*100}% |\n`,
     ) +

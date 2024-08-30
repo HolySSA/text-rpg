@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import { displayStatus, endGame } from './game.js';
-import { updateUserCoins } from './items.js';
 import Utils from "./src/lib/Utils.js";
+import UserInventory from './src/lib/UserInventory.js'
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -48,7 +48,7 @@ const battle = async (stage, player, monster) => {
           // 코인 획득
           const coins = monster.getCoins(stage);
           console.log(chalk.green(`몬스터로부터 ${coins} 코인을 얻었습니다.`));
-          updateUserCoins(coins);
+          UserInventory.updateUserCoins(coins);
           // 경험치 획득
           const exp = monster.getExp();
           console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));
@@ -80,7 +80,7 @@ const battle = async (stage, player, monster) => {
             // 코인 획득
             const coins = monster.getCoins(stage);
             console.log(chalk.green(`몬스터로부터 ${coins} 코인을 얻었습니다.`));
-            updateUserCoins(coins);
+            UserInventory.updateUserCoins(coins);
             // 경험치 획득
             const exp = monster.getExp();
             console.log(chalk.green(`몬스터로부터 ${exp} 경험치를 얻었습니다.\n`));

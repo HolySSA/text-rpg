@@ -12,7 +12,7 @@ class Records extends Singleton {
     super();
 
     // process.cwd() : 현재 작업 디렉토리의 절대 경로를 반환. (현재 Node.js 프로세스가 실행되고 있는 디렉토리의 경로)
-    this.#jsonPath = path.join(process.cwd(), './resources/records.json');
+    this.#jsonPath = path.join(process.cwd(), './resources/Records.json');
     this.#loadRecords();
   }
 

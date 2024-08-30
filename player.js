@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { getUserInventory, getItemNameById, getItemEffect } from './items.js';
+import UserInventory from './src/lib/UserInventory.js';
 
 class Player {
   constructor() {
@@ -183,12 +183,10 @@ class Player {
 
   // 스타팅 무기 장착했을 경우 해당 효과 적용
   applyItemEffects() {
-    // 인벤토리 불러온 후
-    const inventory = getUserInventory();
-    // 아이템 체크
-    for (const itemId of Object.keys(inventory.items)) {
-      const effect = getItemEffect(itemId);
-      const itemName = getItemNameById(itemId);
+    // 보유 아이템 체크
+    for (const itemId of Object.keys(UserInventory.items)) {
+      const effect = UserInventory.getItemEffect(itemId);
+      const itemName = UserInventory.getItemNameById(itemId);
       // 아이템(효과) 존재 시 적용
       if (effect) {
           this.applyEffect(itemName, effect);

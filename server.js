@@ -3,8 +3,8 @@ import figlet from 'figlet';
 import readlineSync from 'readline-sync';
 import { startGame } from "./game.js";
 import { openStore } from './store.js';
-import { getUserInventory, getItemNameById } from './items.js';
 import Records from "./src/lib/Records.js";
+import UserInventory from './src/lib/UserInventory.js';
 
 // 로비 화면을 출력하는 함수
 function displayLobby() {
@@ -28,22 +28,12 @@ function displayLobby() {
     // 게임 이름
     console.log(chalk.yellowBright.bold('textRPG 게임에 오신 것을 환영합니다!'));
 
-    // 사용자 인벤토리
-    let userInventory = getUserInventory();
-    // 아이템 정보를 포맷하여 출력
-    function formatItems(items) {
-        return Object.keys(items).map(id => {
-            const itemName = getItemNameById(id);
-            return itemName;
-        }).join(', ');
-    }
-
     // 설명 텍스트
     console.log(chalk.green('옵션을 선택해주세요.'));
     console.log();
 
     // 옵션들
-    console.log(chalk.blue('1.') + chalk.white(` 새로운 게임 시작 (보유아이템: [${formatItems(userInventory.items)}] 보유코인: ${userInventory.coins})`));
+    console.log(chalk.blue('1.') + chalk.white(` 새로운 게임 시작 (보유아이템: [${UserInventory.formatItemsName()}] 보유코인: ${UserInventory.coins})`));
     console.log(chalk.blue('2.') + chalk.white(' 전용 상점'));
     console.log(chalk.blue('3.') + chalk.white(' 업적 확인하기'));
     console.log(chalk.blue('4.') + chalk.white(' 종료'));
