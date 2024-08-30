@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import Player from './src/characters/player.js';
 import { Monster, BossMonster } from './src/characters/monster.js';
-import { generateMap } from './map.js';
+import { generateMap } from './src/lib/map.js'
 import { battle } from './battle.js';
 import Utils from "./src/lib/Utils.js";
 import Records from './src/lib/Records.js';
