@@ -5,6 +5,7 @@ import { generateMap } from '../lib/map.js';
 import { battle } from './battle.js';
 import Display from '../lib/Display.js';
 import Utils from '../lib/Utils.js';
+import { endGame } from '../lib/game.js';
 
 const adventure = async (stage, player, boss) => {
   // 콘솔 출력 배열

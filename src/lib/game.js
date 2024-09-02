@@ -28,7 +28,7 @@ const startGame = async () => {
 }
 
 // 게임 종료 시 호출되는 함수
-const endGame = (player, stage) => {
+const endGame = async (player, stage) => {
   console.log(chalk.yellowBright('게임 종료!'));
 
   // 사용자 입력 받기
