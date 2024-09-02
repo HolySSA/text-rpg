@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import { Monster } from '../characters/monster.js';
-import { generateMap } from '../lib/map.js';
+import { generateMap } from '../lib/Map.js';
 import { battle } from './battle.js';
 import Display from '../lib/Display.js';
 import Utils from '../lib/Utils.js';
-import { endGame } from '../lib/game.js';
+import { endGame } from '../lib/Game.js';
 
 const adventure = async (stage, player, boss) => {
   // 콘솔 출력 배열

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { endGame } from '../lib/game.js';
+import { endGame } from '../lib/Game.js';
 import Utils from "../lib/Utils.js";
 import UserInventory from '../lib/UserInventory.js'
 import Display from '../lib/Display.js';
@@ -131,7 +131,7 @@ const battle = async (stage, player, monster) => {
       logs.push(chalk.redBright('플레이어가 패배했습니다!'));
       logs.forEach((log) => console.log(log));
       // 업적 저장 후 게임 종료
-      endGame(player, stage);
+      await endGame(player, stage);
       return;
     }
   }
