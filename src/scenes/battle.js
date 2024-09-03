@@ -4,6 +4,7 @@ import { endGame } from '../lib/Game.js';
 import Utils from '../lib/Utils.js';
 import UserInventory from '../lib/UserInventory.js';
 import Display from '../lib/Display.js';
+import DotenvConfig from '../lib/dotenv_config.js';
 
 // 배틀 로직
 const battle = async (stage, player, monster) => {
@@ -111,7 +112,7 @@ const battle = async (stage, player, monster) => {
 
       case '3':
         // 30% 로 도망가기 성공
-        if (Math.random() < 0.3) {
+        if (Math.random() < DotenvConfig.runawayChanceThreshold) {
           console.log(chalk.green('몬스터에게서 달아났습니다...'));
           // 2초 딜레이
           await Utils.TimeDelay(2000);

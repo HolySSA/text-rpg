@@ -6,6 +6,7 @@ import { battle } from './battle.js';
 import Display from '../lib/Display.js';
 import Utils from '../lib/Utils.js';
 import { endGame } from '../lib/Game.js';
+import DotenvConfig from '../lib/dotenv_config.js';
 
 const adventure = async (stage, player, boss) => {
   // 콘솔 출력 배열
@@ -51,27 +52,29 @@ const adventure = async (stage, player, boss) => {
         // 이동하기
 
         // 이동 시 유효한 입력 배열
-        const validChoices = ['w', 'a', 's', 'd'];
+        const validChoices = ['W', 'A', 'S', 'D'];
         let moveChoice;
         while (1) {
-          moveChoice = readlineSync.question(
-            chalk.green(
-              `\n이동 방향을 선택하세요 ( W 상, S 하, A 좌, D 우 ) : `
+          moveChoice = readlineSync
+            .question(
+              chalk.green(
+                `\n이동 방향을 선택하세요 ( W 상, S 하, A 좌, D 우 ) : `
+              )
             )
-          );
+            .toUpperCase();
           // 유효한 입력인 경우
           if (validChoices.includes(moveChoice)) {
             switch (moveChoice) {
-              case 'w':
+              case 'W':
                 player.move('up', map);
                 break;
-              case 'a':
+              case 'A':
                 player.move('left', map);
                 break;
-              case 's':
+              case 'S':
                 player.move('down', map);
                 break;
-              case 'd':
+              case 'D':
                 player.move('right', map);
                 break;
             }
@@ -124,7 +127,8 @@ const adventure = async (stage, player, boss) => {
 
         // 10% 탈출 성공
         const escapeChance = Math.random();
-        if (escapeChance > 0.9) {
+        console.log(DotenvConfig.escapeChanceThreshold);
+        if (escapeChance > DotenvConfig.escapeChanceThreshold) {
           console.log(
             chalk.greenBright(
               `스테이지 ${stage} 에서 탈출 성공! 다음 스테이지로 넘어갑니다.`

@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import UserInventory from '../lib/UserInventory.js';
 import Utils from '../lib/Utils.js';
+import DotenvConfig from '../lib/dotenv_config.js';
 
 class Player {
   constructor() {
@@ -52,7 +53,8 @@ class Player {
   // 몬스터 조우 함수
   encounterMonster() {
     // 30% 확률
-    if (Math.random() < 0.3) return true;
+    if (Math.random() < DotenvConfig.encounterMonsterChanceThreshold)
+      return true;
 
     return false;
   }
