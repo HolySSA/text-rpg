@@ -3,10 +3,10 @@
  */
 
 /* 문서화 주석( /** - 일반 주석과 달리 문서화 사용 가능. /*는 문서화 불가 )
-* `@param`은 자바스크립트의 주석 문서화 도구에서 사용되는 태그.
-* `@return`은 문서화 주석에서 함수 또는 메서드의 반환값에 대한 정보를 설명하는 태그.
-* Utils 클래스 사용 시 해당 함수에 마우스를 가져다대면 아래의 설명이 보인다.
-*/
+ * `@param`은 자바스크립트의 주석 문서화 도구에서 사용되는 태그.
+ * `@return`은 문서화 주석에서 함수 또는 메서드의 반환값에 대한 정보를 설명하는 태그.
+ * Utils 클래스 사용 시 해당 함수에 마우스를 가져다대면 아래의 설명이 보인다.
+ */
 
 class Utils {
   /**
@@ -15,7 +15,7 @@ class Utils {
    * @returns {Promise<void>} - 지연 완료 후 반환되는 Promise
    */
   static TimeDelay(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**

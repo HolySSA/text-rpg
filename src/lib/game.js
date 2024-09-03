@@ -14,8 +14,7 @@ const startGame = async () => {
     const boss = new BossMonster(stage);
     await adventure(stage, player, boss);
 
-    if(player.hp <= 0)
-      break;
+    if (player.hp <= 0) break;
 
     stage++;
   }
@@ -25,7 +24,7 @@ const startGame = async () => {
     endGame(player, 10);
     return;
   }
-}
+};
 
 // 게임 종료 시 호출되는 함수
 const endGame = async (player, stage) => {
@@ -44,6 +43,6 @@ const endGame = async (player, stage) => {
   console.log(chalk.yellowBright('업적이 저장되었습니다!'));
   // 저장된 업적 목록 출력
   Records.listRecords();
-}
+};
 
-export { startGame, endGame }
+export { startGame, endGame };

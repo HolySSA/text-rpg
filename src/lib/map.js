@@ -2,7 +2,9 @@
 function generateMap(width, height, startX, startY, bossX, bossY) {
   // 맵, 방문여부 Array 초기화
   const map = Array.from({ length: height }, () => Array(width).fill('.'));
-  const visited = Array.from({ length: height }, () => Array(width).fill(false));
+  const visited = Array.from({ length: height }, () =>
+    Array(width).fill(false)
+  );
   // 플레이어와 보스 사이의 경로
   const path = new Set();
   // 플레이어와 보스 사이를 이어주는 배열 담기
@@ -17,18 +19,20 @@ function generateMap(width, height, startX, startY, bossX, bossY) {
     const parent = {};
     visited[startY][startX] = true;
     addPath(startX, startY);
-    
+
     // queue가 텅 빌때까지 루프
     while (queue.length) {
       // 큐에서 꺼낸 값 x, y로 저장
       const [x, y] = queue.shift();
 
       // 목적지에 도달하면 중단
-      if (x === endX && y === endY)
-        break;
+      if (x === endX && y === endY) break;
 
       const directions = [
-        [0, 1], [1, 0], [0, -1], [-1, 0] // 아래, 오른쪽, 위, 왼쪽
+        [0, 1],
+        [1, 0],
+        [0, -1],
+        [-1, 0], // 아래, 오른쪽, 위, 왼쪽
       ];
 
       // 보스와 플레이어는 항상 이어져있어야 하므로 해당 경로 추적
@@ -38,7 +42,13 @@ function generateMap(width, height, startX, startY, bossX, bossY) {
         const newY = y + dy;
 
         // 유효한 범위 체크
-        if (newX >= 0 && newX < width && newY >= 0 && newY < height && !visited[newY][newX]) {
+        if (
+          newX >= 0 &&
+          newX < width &&
+          newY >= 0 &&
+          newY < height &&
+          !visited[newY][newX]
+        ) {
           // 방문 업데이트
           visited[newY][newX] = true;
           // 방문했으니 queue에 추가
@@ -67,8 +77,7 @@ function generateMap(width, height, startX, startY, bossX, bossY) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       // 처음(플레이어) 지점과 마지막(보스) 지점 제외
-      if((y === 0 && x === 0) || (x === bossX && y === bossY))
-        continue;
+      if ((y === 0 && x === 0) || (x === bossX && y === bossY)) continue;
       // 플레이어와 보스 사이 최단 경로에 포함X
       if (map[y][x] === '.' && Math.random() > 0.7 && !path.has(`${x},${y}`)) {
         // 장애물 추가

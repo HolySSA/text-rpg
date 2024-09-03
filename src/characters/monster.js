@@ -10,19 +10,21 @@ class Monster {
     7: ['좀비', '고스트', '스켈레톤', '스펙터'], // 스테이지 7
     8: ['메두사', '용암도마뱀', '이무기'], // 스테이지 8
     9: ['늑대인간', '키메라', '거인족'], // 스테이지 9
-    10: ['드래곤추종자', '거인족', '대마법사'] // 스테이지 10
+    10: ['드래곤추종자', '거인족', '대마법사'], // 스테이지 10
   };
 
   static DEFAULT_HP = 7;
   static DEFAULT_ATK = 3;
 
   constructor(stage) {
-    this.hp = Math.floor(Math.random() * (10 - Monster.DEFAULT_HP + 1)) + Monster.DEFAULT_HP;
+    this.hp =
+      Math.floor(Math.random() * (10 - Monster.DEFAULT_HP + 1)) +
+      Monster.DEFAULT_HP;
     this.hp *= stage;
     this.atk = Monster.DEFAULT_ATK;
     this.atk *= stage;
     // 스테이지에 따른 이름 할당
-    this.name = this.getNameForStage(stage); 
+    this.name = this.getNameForStage(stage);
   }
 
   // 스테이지 별 몬스터 이름 적용
@@ -46,8 +48,7 @@ class Monster {
   takeDamage(amount) {
     this.hp -= amount;
 
-    if(this.hp < 0)
-      this.hp = 0;
+    if (this.hp < 0) this.hp = 0;
   }
 
   // 경험치 생성
@@ -61,7 +62,7 @@ class Monster {
     // 스테이지 별 코인 범위
     const minCoin = 1 * stage;
     const maxCoin = 2 * stage;
-    
+
     // 랜덤 코인
     return Math.floor(Math.random() * (maxCoin - minCoin + 1)) + minCoin;
   }
@@ -73,14 +74,14 @@ class BossMonster extends Monster {
   static bossNames = [
     '회색갈기늑대', // 스테이지 1
     '여왕거미', // 스테이지 2
-    '고블린로드',   // 스테이지 3
-    '쌍두오우거',    // 스테이지 4
+    '고블린로드', // 스테이지 3
+    '쌍두오우거', // 스테이지 4
     '미노타우르스', // 스테이지 5
     '켄타우로스', // 스테이지 6
-    '리치',     // 스테이지 7
+    '리치', // 스테이지 7
     '바실리스크', // 스테이지 8
-    '라이칸스로프',  // 스테이지 9
-    '드래곤',   // 스테이지 10
+    '라이칸스로프', // 스테이지 9
+    '드래곤', // 스테이지 10
   ];
 
   constructor(stage) {
@@ -97,7 +98,8 @@ class BossMonster extends Monster {
 
   attack(player) {
     // 최소 데미지와 최대 데미지 사이의 랜덤 피해량
-    const damage = Math.floor(Math.random() * (this.atk - this.minAtk + 1)) + this.minAtk;
+    const damage =
+      Math.floor(Math.random() * (this.atk - this.minAtk + 1)) + this.minAtk;
     // randomAtk 값을 저장할 배열
     this.attackValues = [];
     // randomAtk 값 저장
@@ -116,7 +118,7 @@ class BossMonster extends Monster {
     // 스테이지 별 코인 범위
     const minCoin = 1 * stage;
     const maxCoin = 2 * stage;
-    
+
     // 일반 몬스터의 3배
     return (Math.floor(Math.random() * (maxCoin - minCoin + 1)) + minCoin) * 3;
   }

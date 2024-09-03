@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import UserInventory from '../lib/UserInventory.js';
-import Utils from "../lib/Utils.js";
+import Utils from '../lib/Utils.js';
 
 class Player {
   constructor() {
@@ -31,11 +31,19 @@ class Player {
 
   move(direction, map) {
     // 상하좌우 업데이트 (위치 표시)
-    const newX = this.x + (direction === 'right' ? 1 : direction === 'left' ? -1 : 0);
-    const newY = this.y + (direction === 'down' ? 1 : direction === 'up' ? -1 : 0);
+    const newX =
+      this.x + (direction === 'right' ? 1 : direction === 'left' ? -1 : 0);
+    const newY =
+      this.y + (direction === 'down' ? 1 : direction === 'up' ? -1 : 0);
 
     // 경계 + 장애물 체크하고 이동
-    if (newX >= 0 && newX < map[0].length && newY >= 0 && newY < map.length && map[newY][newX] !== 'X') {
+    if (
+      newX >= 0 &&
+      newX < map[0].length &&
+      newY >= 0 &&
+      newY < map.length &&
+      map[newY][newX] !== 'X'
+    ) {
       this.x = newX;
       this.y = newY;
     }
@@ -44,8 +52,7 @@ class Player {
   // 몬스터 조우 함수
   encounterMonster() {
     // 30% 확률
-    if (Math.random() < 0.3)
-      return true;
+    if (Math.random() < 0.3) return true;
 
     return false;
   }
@@ -63,7 +70,8 @@ class Player {
 
     for (let i = 0; i < atkTimes; i++) {
       // 공격시 최소~최대 사이의 데미지 / 공격력의 경우 정수가 가독성이 좋으므로 floor로 버리기
-      const randomAtk = Math.floor(Math.random() * (maxAtk - minAtk + 1)) + minAtk;
+      const randomAtk =
+        Math.floor(Math.random() * (maxAtk - minAtk + 1)) + minAtk;
       // randomAtk 값 할당
       this.attackValues.push(randomAtk);
       // 몬스터 데미지
@@ -83,18 +91,15 @@ class Player {
   defense() {
     const randNum = Math.random();
     // 반격 확률, 방어 확률에 따른 반격/방어 성공/실패
-    if (randNum < this.counterChance)
-      return 'counter';
-    else if (randNum < this.counterChance + this.defChance)
-      return 'defense';
-    else
-      return 'failure';
+    if (randNum < this.counterChance) return 'counter';
+    else if (randNum < this.counterChance + this.defChance) return 'defense';
+    else return 'failure';
   }
 
   // 반격
   counterattack(monster) {
     // 카운터 어택 시 공격력의 2배 적용
-    this.counterAtk = Math.floor(this.atk * 2); 
+    this.counterAtk = Math.floor(this.atk * 2);
     // 몬스터 데미지
     monster.takeDamage(this.counterAtk);
   }
@@ -127,7 +132,7 @@ class Player {
       { type: 'atkIncrease', chance: 0.2 }, // 공격력 증가 20%
       { type: 'defIncrease', chance: 0.2 }, // 방어확률 증가 20%
       { type: 'counterIncrease', chance: 0.1 }, // 반격확률 증가 10%
-      { type: 'atkTimes', chance: 0.1 } // 연속 공격 10%
+      { type: 'atkTimes', chance: 0.1 }, // 연속 공격 10%
     ];
 
     const randNum = Math.random();
@@ -145,7 +150,7 @@ class Player {
   }
 
   // 랜덤 선택된 보상을 적용
-  applyReward (type) {
+  applyReward(type) {
     switch (type) {
       case 'heal':
         // 최대 체력으로 회복
@@ -160,21 +165,27 @@ class Player {
       case 'defIncrease':
         // 방어 확률 증가
         this.defChance = Utils.toDecimal(this.defChance + 0.1, 2);
-        console.log(chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
+        console.log(
+          chalk.blue(`방어 확률이 ${this.defChance * 100}%로 증가했습니다.`)
+        );
         break;
       case 'counterIncrease':
         // 반격 확률 증가
         this.counterChance = Utils.toDecimal(this.counterChance + 0.1, 2);
-        console.log(chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`));
+        console.log(
+          chalk.blue(`반격 확률이 ${this.counterChance * 100}%로 증가했습니다.`)
+        );
         break;
       case 'atkTimes':
         // 연속 공격
         if (this.atkTimes < 3) {
-          console.log(chalk.blue(`연속 공격(${this.atkTimes} -> ${this.atkTimes + 1}) 획득!`));
+          console.log(
+            chalk.blue(
+              `연속 공격(${this.atkTimes} -> ${this.atkTimes + 1}) 획득!`
+            )
+          );
           this.atkTimes++;
-        }
-        else
-          console.log('기본 공격 횟수는 최대 3회까지 증가할 수 있습니다.');
+        } else console.log('기본 공격 횟수는 최대 3회까지 증가할 수 있습니다.');
         break;
       default:
         console.log('잘못된 보상 유형입니다.');
@@ -190,7 +201,7 @@ class Player {
       const itemName = UserInventory.getItemNameById(itemId);
       // 아이템(효과) 존재 시 적용
       if (effect) {
-          this.applyEffect(itemName, effect);
+        this.applyEffect(itemName, effect);
       }
     }
   }
@@ -201,12 +212,18 @@ class Player {
       case 'atkIncrease10':
         // 녹슨검
         this.atk = Math.round(this.atk * 1.1);
-        console.log(chalk.blue(`${itemName}에 의해 공격력이 ${this.atk}로 증가했습니다.`));
+        console.log(
+          chalk.blue(`${itemName}에 의해 공격력이 ${this.atk}로 증가했습니다.`)
+        );
         break;
       case 'defIncrease10':
         // 나무방패
         this.defChance = Utils.toDecimal(this.defChance + 0.1, 2);
-        console.log(chalk.blue(`${itemName}에 의해 방어 확률이 ${this.defChance * 100}%로 증가했습니다.`));
+        console.log(
+          chalk.blue(
+            `${itemName}에 의해 방어 확률이 ${this.defChance * 100}%로 증가했습니다.`
+          )
+        );
         break;
       default:
         console.log(chalk.red('알 수 없는 효과입니다.'));

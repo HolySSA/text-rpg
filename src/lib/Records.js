@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import Singleton from "./Singleton.js";
+import Singleton from './Singleton.js';
 
 class Records extends Singleton {
   // #변수명 : private를 의미. 클래스 내부에서만 접근 가능한 변수.
@@ -24,35 +24,42 @@ class Records extends Singleton {
       if (data !== '') {
         this.#records = JSON.parse(data);
       }
-    }
-    else {
+    } else {
       this.#records = [];
     }
   }
 
   // 기록 데이터 저장
   #saveRecords() {
-    fs.writeFileSync(this.#jsonPath, JSON.stringify(this.#records, null, 2), 'utf8');
+    fs.writeFileSync(
+      this.#jsonPath,
+      JSON.stringify(this.#records, null, 2),
+      'utf8'
+    );
   }
 
   // 기록 추가
   addRecords(nickname, level, exp, stage) {
     // 닉네임 레벨 경험치 스테이지 날짜
-    this.#records.push({ nickname, level, exp, stage, date: new Date().toISOString() });
+    this.#records.push({
+      nickname,
+      level,
+      exp,
+      stage,
+      date: new Date().toISOString(),
+    });
     // 기록 저장
     this.#saveRecords();
   }
-  
+
   // 기록 목록 출력
   listRecords() {
     // 기록 정렬
     const sortedRecords = [...this.#records].sort((a, b) => {
       // 스테이지 순
-      if (b.stage !== a.stage)
-        return b.stage - a.stage;
+      if (b.stage !== a.stage) return b.stage - a.stage;
       // 레벨 순
-      if (b.level !== a.level)
-        return b.level - a.level;
+      if (b.level !== a.level) return b.level - a.level;
       // 경험치 순
       return b.exp - a.exp;
     });

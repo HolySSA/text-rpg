@@ -13,14 +13,16 @@ function openStore() {
 
   console.log(chalk.green(`\n1. 구매. 2. 상점 나가기.`));
 
-  while(1){
+  while (1) {
     const choice = readlineSync.question('입력: ');
     switch (choice) {
       case '1':
         // 콘솔 정리 후 생성
         console.clear();
         console.log(line);
-        console.log(chalk.yellowBright('\ntextRPG 상점에 오신 것을 환영합니다!\n'));
+        console.log(
+          chalk.yellowBright('\ntextRPG 상점에 오신 것을 환영합니다!\n')
+        );
         console.log(line);
         handleUserInput();
         return;
@@ -39,14 +41,14 @@ function handleUserInput() {
   // 아이템 목록 출력
   UserInventory.displayItems();
 
-  while(1){
+  while (1) {
     const buyChoice = readlineSync.question('\n구매할 물품: ');
-    switch (buyChoice){
-      case "0":
+    switch (buyChoice) {
+      case '0':
         start();
         break;
-      case "1":
-      case "2":
+      case '1':
+      case '2':
         // 구매 후 아이템 목록 갱신
         UserInventory.buyItem(buyChoice);
         UserInventory.displayItems();
@@ -55,9 +57,8 @@ function handleUserInput() {
         console.log(chalk.red('올바른 선택을 하세요.'));
     }
 
-    if (buyChoice === "0")
-      break;
+    if (buyChoice === '0') break;
   }
 }
 
-export { openStore }
+export { openStore };

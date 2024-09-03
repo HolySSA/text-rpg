@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import Singleton from "./Singleton.js";
+import Singleton from './Singleton.js';
 import Items from './Items.js';
 
 class UserInventory extends Singleton {
@@ -50,11 +50,10 @@ class UserInventory extends Singleton {
       this.#items = {};
       for (const [id] of Object.entries(parsedData.items)) {
         if (Items[id]) {
-          this.#items[id] = Items[id];  // Items에서 인스턴스를 가져와서 사용
+          this.#items[id] = Items[id]; // Items에서 인스턴스를 가져와서 사용
         }
       }
-    }
-    else {
+    } else {
       // 기본값으로 json파일 생성.
       this.saveUserData();
     }
@@ -64,7 +63,7 @@ class UserInventory extends Singleton {
   saveUserData() {
     const data = {
       coins: this.#coins,
-      items: {}
+      items: {},
     };
 
     // 구매한 아이템 ID만 저장
@@ -84,10 +83,12 @@ class UserInventory extends Singleton {
 
   // 보유 아이템 이름만 포맷하여 출력
   formatItemsName() {
-    return Object.keys(this.#items).map((id) => {
-      const item = this.#items[id];
-      return item ? item.name : '알 수 없는 아이템';
-    }).join(', ');
+    return Object.keys(this.#items)
+      .map((id) => {
+        const item = this.#items[id];
+        return item ? item.name : '알 수 없는 아이템';
+      })
+      .join(', ');
   }
 
   // 아이템 목록 출력
@@ -96,11 +97,20 @@ class UserInventory extends Singleton {
     // Item 전체 탐색
     for (const [id, item] of Object.entries(Items)) {
       if (this.#items[id])
-        console.log(chalk.white(`${id}. ${item.name} - ${item.description}`) + chalk.blue(` (보유한 무기)`));
+        console.log(
+          chalk.white(`${id}. ${item.name} - ${item.description}`) +
+            chalk.blue(` (보유한 무기)`)
+        );
       else if (item.buyPossible)
-        console.log(chalk.white(`${id}. ${item.name} - ${item.description}`) + chalk.white(` (${item.price} 코인)`));
+        console.log(
+          chalk.white(`${id}. ${item.name} - ${item.description}`) +
+            chalk.white(` (${item.price} 코인)`)
+        );
       else
-        console.log(chalk.white(`${id}. ${item.name} - ${item.description}`) + chalk.red(` (구매 불가)`));
+        console.log(
+          chalk.white(`${id}. ${item.name} - ${item.description}`) +
+            chalk.red(` (구매 불가)`)
+        );
     }
   }
 
@@ -125,13 +135,15 @@ class UserInventory extends Singleton {
     }
 
     // 무기 구매 처리
-    this.#items[itemId] = item;  // 기존 인스턴스를 사용
+    this.#items[itemId] = item; // 기존 인스턴스를 사용
     this.updateUserCoins(-item.price);
 
     // 무기 구매 후 구매 불가로 변경
     item.buyPossible = false;
 
-    console.log(chalk.green(`${item.name}을(를) 구매했습니다. 남은 코인: ${this.#coins}`));
+    console.log(
+      chalk.green(`${item.name}을(를) 구매했습니다. 남은 코인: ${this.#coins}`)
+    );
     this.saveUserData(); // 데이터 저장
   }
 }
