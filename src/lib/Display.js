@@ -5,14 +5,16 @@ import figlet from 'figlet';
 import UserInventory from './UserInventory.js';
 
 class Display {
-  // 로비 화면 출력
+  /**
+   * 로비 화면 출력
+   */
   static displayLobby() {
     console.clear();
 
     // 타이틀 텍스트
     console.log(
       chalk.cyan(
-        figlet.textSync('RL- Javascript', {
+        figlet.textSync('TEXTRPG - MUD', {
           font: 'Standard',
           horizontalLayout: 'default',
           verticalLayout: 'default',
